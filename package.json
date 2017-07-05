@@ -1,0 +1,21 @@
+{
+  "name": "workoutlogangular",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "./node_modules/.bin/http-server -a localhost -p8080",
+    "prestart": "npm install",
+    "postinstall": "bower install"
+  },
+  "author": "Mackenzie Hartman",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "http-server": "^0.10.0"
+  }
+}
