@@ -32,7 +32,7 @@
 			vm.submit = function(){
 				// ng-model and ng-submit create the vm.user object that UserService.create uses to sign a new user up to our application.
 				UsersService.create(vm.user).then(function(response){
-					console.log(response);
+					// console.log(response);
 					// $state.go(‘define’) is how ui-route changes from state (url) to other states.
 					$state.go('define');
 				});
