@@ -3,6 +3,7 @@
 		'ui.router',
 		'workoutlog.auth.signup'
 		'workoutlog.auth.signin'
+		'workoutlog.logs'
 	]);
 
 	function config($urlRouterProvider) {
