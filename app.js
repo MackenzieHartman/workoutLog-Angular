@@ -1,6 +1,7 @@
 (function() {
 	var app = angular.module('workoutlog', [
-		'ui.router'
+		'ui.router',
+		'workoutlog.auth.signup'
 	]);
 
 	function config($urlRouterProvider) {

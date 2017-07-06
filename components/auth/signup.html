@@ -1,0 +1,33 @@
+<div class = "container">
+	<div class = "row">
+		<div class="col-xs-6 col-xs-offset-4">
+			<h3>Sign Up</h3>
+				<p>{{ctrl.message}}</p>
+			<form id = "new_user" ng-submit="ctrl.submit()">
+				<p>
+					<label for="username">Username</label><br>
+					<input type="text" name="username" ng-model="ctrl.user.username" required>
+				</p>
+				<p>
+					<label for="password">Password</label><br>
+					<input type="text" name="passsword" ng-model="ctrl.user.password" required>					
+				</p>
+				<input type="submit" id="signup" name="commit" value="signup" class="btn btn-default">
+				<span class="login">
+					Already have an account?
+					<a ui-sref="signin">Log in.</a>
+				</span>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!--Angular expressions - these are used to display objects and object properties on the view.  They are exposed by the {{ }} throughout the view.
+https://docs.angularjs.org/guide/expression -->
+
+<!-- Angular directives - directives are implemented by Angular to make html dynamic.  The prebuilt Angular directives are prefaced with ng.  In this view, ng-submit and ng-model are implemented.  ng-submit is a directive that tells the Angular framework to listen for that form’s onSubmit event.
+ng-model is a directive that is used to create two way data binding. https://docs.angularjs.org/api/ng/directive -->
+
+<!-- ui-sref is how the routing for this application will occur.  The views will be injected in index.html where <div ui-view></div> is located.
+https://scotch.io/tutorials/3-simple-tips-for-using-ui-router -->
