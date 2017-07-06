@@ -4,6 +4,7 @@
 		'workoutlog.auth.signup'
 		'workoutlog.auth.signin'
 		'workoutlog.logs'
+		'workoutlog.history'
 	]);
 
 	function config($urlRouterProvider) {
