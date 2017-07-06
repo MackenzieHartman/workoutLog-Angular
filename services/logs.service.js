@@ -2,7 +2,7 @@
 	angular.module('workoutlog')
 		.service('LogsService', LogsService);
 
-		LogsService.$inject = ['$http,' 'API_BASE'];
+		LogsService.$inject = ['$http' ,'API_BASE'];
 		function LogsService($http, API_BASE, DefineService){
 			var logsService = this;
 			logsService.workouts = [];
@@ -12,16 +12,16 @@
 				return $http.post(API_BASE + 'log',{
 					log: log
 				})
-				.then
-				function(repsonse){
-					logsService.workouts.push(repsonse);
+				.then(
+				function(response) {
+					logsService.workouts.push(response);
 				});
 			};
 
 			logsService.fetch = function(log){
 				return $http.get(API_BASE + 'log')
 					.then
-					(function(repsonse){
+					(function(response){
 						logsService.workouts = response.data;
 					});
 			};
@@ -32,7 +32,7 @@
 
 
 			logsService.deleteLogs = function(log){
-				var logIndex = logsService.workouts.indecOf(log);
+				var logIndex = logsService.workouts.indexOf(log);
 				logsService.workouts.splice(logIndex, 1);
 				var deleteData = {log: log};
 				return $http({
@@ -46,7 +46,7 @@
 			logsService.fetchOne = function(log){
 				// console.log(log);
 				return $http.get(API_BASE + 'log/' + log)
-					.then(function(repsonse){
+					.then(function(response){
 						logsService.individualLog = response.data;
 					});
 			};

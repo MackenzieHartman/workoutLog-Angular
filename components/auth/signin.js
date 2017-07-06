@@ -3,7 +3,7 @@
 		.module('workoutlog.auth.signin', ['ui.router'])
 		.config(signinConfig);
 
-		funtion. signinConfig($stateProvider){
+		function signinConfig($stateProvider){
 			$stateProvider
 				.state('signin', {
 					url: '/signin',
@@ -31,3 +31,4 @@
 		SignInController.$inject = ['$state', "UsersService"];
 })();
 
+// signin component uses $state and UsersService as dependencies.

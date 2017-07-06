@@ -25,7 +25,7 @@
 	}
 	
 	HistoryController.$inject = ['$state', 'LogsService'];
-	funtion HistoryController($state, LogsService){
+	function HistoryController($state, LogsService){
 		var vm= this;
 		vm.history = LogsService.getLogs();
 
@@ -34,8 +34,8 @@
 		};
 
 		vm.updateLog = (function(item){
-			$state.go('logs/update', {'id' : item.id});;
-			};
+			$state.go('logs/update', {'id' : item.id});
+			});
 	}
 })();
 

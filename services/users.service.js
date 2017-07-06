@@ -7,19 +7,20 @@
 
 (function(){
 	angular.module('workoutlog')
-		.service('UsersService', [
-			'$http', 'API_BASE', 'SessionToken','CurrentUser',
-			function($http, API_BASE, SessionToken, CurrentUser){
-				function UsersService(){
-				}
+	.service('UsersService', [
+		'$http', 'API_BASE', 'SessionToken','CurrentUser',
+		function($http, API_BASE, SessionToken, CurrentUser){
+			function UsersService(){
+
 			}
+
 			UsersService.prototype.create = function(user){
 				var userPromise = $http.post(API_BASE + 'user', {
 					user: user
 				});
 
 				userPromise.then(function(response){
-					SessionToken.set(response.data.sesssionToken);
+					SessionToken.set(response.data.sessionToken);
 					CurrentUser.set(response.data.user);
 				});
 				return userPromise;
@@ -30,14 +31,14 @@
 					user: user
 				});
 
-				loginPromise.then(function(repsonse){
+				loginPromise.then(function(response){
 
-
-					SessionToken.set(repsonse.data.sessionToken);
-					CurrentUser.set(repsonse.data.user);
+					SessionToken.set(response.data.sessionToken);
+					CurrentUser.set(response.data.user);
 				});
 				return loginPromise;
 			};
 			return new UsersService();
 		}]);
 })();
+

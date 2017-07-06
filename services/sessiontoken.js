@@ -8,6 +8,7 @@
  			// .prototype to attach the functions of .set / .get and .clear to the prototype chain having  memory enhancements and follow conventional design patterns.
 			SessionToken.prototype.set = function(token){
 				this.sessionToken = token;
+				console.log("Setting session token: ", token);
 				$window.localStorage.setItem('sessionToken', token);
 			};
  			// .prototype to attach the functions of .set / .get and .clear to the prototype chain having memory enhancements and follow conventional design patterns.
@@ -15,10 +16,11 @@
 				return this.sessionToken;
 			};
  			// .prototype to attach the functions of .set / .get and .clear to the prototype chain having  memory enhancements and follow conventional design patterns.
-			SessionToken.prototype.get = function(){
+			SessionToken.prototype.clear = function(){
 				this.sessionToken = undefined;
 				$window.localStorage.removeItem('sessionToken');
 			};
+			return new SessionToken();
 		}]);
 })();
 

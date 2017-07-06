@@ -1,6 +1,6 @@
 (function(){
 	angular
-		.module('workoutlog.auth.signup', ['ui,router'])
+		.module('workoutlog.auth.signup', ['ui.router'])
 		.config(signupConfig);
 		
 		// signUpConfig establishes these items: defines this component as the state of signup and provides the url route templateUrl is the html the component will use
@@ -10,7 +10,7 @@
 				.state('signup', {
 					url: '/signup',
 					// templateUrl is the html the component will use
-					templateUrl: '/components/auth/signup/html',
+					templateUrl: '/components/auth/signup.html',
 					// controller indicates which controller will dictate the behavior of this view 
 					controller: SignUpController,
 					// controllerAs creates an alias so a developer doesn’t have to type SignUpController.<function orobject>
@@ -20,7 +20,7 @@
 				});
 		};
 
-		sigupConfig.$inject = ['$stateProvider'];
+		signupConfig.$inject = ['$stateProvider'];
 		// SignUpController has $state and UsersService injected into it
 		function SignUpController($state, UsersService){
 			// var vm = this; is how the binding of the controller to the view is completed
@@ -28,11 +28,11 @@
 			// vm.user = {}; establishes an object to build the username and password inside.
 			vm.user = {};
 			// vm.message = “Sign up for an account!” is an example of expressions and how vm and this scope work together.
-			vm.message = "sign up for an account!"
+			vm.message = "Sign up for an account!"
 			vm.submit = function(){
 				// ng-model and ng-submit create the vm.user object that UserService.create uses to sign a new user up to our application.
 				UsersService.create(vm.user).then(function(response){
-					// console.log(response);
+					console.log(response);
 					// $state.go(‘define’) is how ui-route changes from state (url) to other states.
 					$state.go('define');
 				});

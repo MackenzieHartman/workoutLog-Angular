@@ -1,21 +1,58 @@
 (function() {
 	var app = angular.module('workoutlog', [
 		'ui.router',
-		'workoutlog.auth.signup'
+		'workoutlog.define',
+		'workoutlog.logs',
+		'workoutlog.history',
+		// 'workoutlog.feed',
+		'workoutlog.auth.signup',
 		'workoutlog.auth.signin'
-		'workoutlog.logs'
-		'workoutlog.history'
-	]);
+	])
 
+	.factory('socket', function(socketFactory){
+		var myIoSocket = io.connect('http://localhost:3000');
+	})
 	function config($urlRouterProvider) {
 		$urlRouterProvider.otherwise('/signin');
 	}
 
 	config.$inject = [ '$urlRouterProvider' ];
 	app.config(config);
-	app.constant('API_BASE', '//localhost:3000/api');
+	app.constant('API_BASE', '//localhost:3000/api/');
 })();
 
+
+// (function() {
+// 	var app = angular.module('workoutlog', [
+// 		'ui.router',
+// 		'workoutlog.define',
+// 		'workoutlog.logs',
+// 		'workoutlog.history',
+// 		'workoutlog.feed',
+// 		'workoutlog.auth.signup',
+// 		'workoutlog.auth.signin'
+// 	])
+
+// 	.factory('socket', function(socketFactory){
+// 		var myIoSocket = io.connect('http://localhost:3000');
+
+// 		var socket = socketFactory({
+// 			ioSocket = myIoSocket
+// 		});
+// 		// return socket;
+// 	});
+
+// 	function config($urlRouterProvider) {
+// 		$urlRouterProvider.otherwise('/signin');
+// 	}
+
+// 	config.$inject = [ '$urlRouterProvider' ];
+// 	app.config(config);
+
+// 	// var API_BASE = location.hostname === "localhost" ?
+// 	// 	"//localhost:3000/api/" :
+// 	app.constant('API_BASE', '//localhost:3000/api/');
+// })();
 
 
 (function(){
@@ -23,7 +60,7 @@
 		.module('workoutlog.auth.signin', ['ui.router'])
 		.config(signinConfig);
 
-		funtion. signinConfig($stateProvider){
+		function signinConfig($stateProvider){
 			$stateProvider
 				.state('signin', {
 					url: '/signin',
@@ -51,10 +88,10 @@
 		SignInController.$inject = ['$state', "UsersService"];
 })();
 
-
+// signin component uses $state and UsersService as dependencies.
 (function(){
 	angular
-		.module('workoutlog.auth.signup', ['ui,router'])
+		.module('workoutlog.auth.signup', ['ui.router'])
 		.config(signupConfig);
 		
 		// signUpConfig establishes these items: defines this component as the state of signup and provides the url route templateUrl is the html the component will use
@@ -64,7 +101,7 @@
 				.state('signup', {
 					url: '/signup',
 					// templateUrl is the html the component will use
-					templateUrl: '/components/auth/signup/html',
+					templateUrl: '/components/auth/signup.html',
 					// controller indicates which controller will dictate the behavior of this view 
 					controller: SignUpController,
 					// controllerAs creates an alias so a developer doesn’t have to type SignUpController.<function orobject>
@@ -74,7 +111,7 @@
 				});
 		};
 
-		sigupConfig.$inject = ['$stateProvider'];
+		signupConfig.$inject = ['$stateProvider'];
 		// SignUpController has $state and UsersService injected into it
 		function SignUpController($state, UsersService){
 			// var vm = this; is how the binding of the controller to the view is completed
@@ -82,11 +119,11 @@
 			// vm.user = {}; establishes an object to build the username and password inside.
 			vm.user = {};
 			// vm.message = “Sign up for an account!” is an example of expressions and how vm and this scope work together.
-			vm.message = "sign up for an account!"
+			vm.message = "Sign up for an account!"
 			vm.submit = function(){
 				// ng-model and ng-submit create the vm.user object that UserService.create uses to sign a new user up to our application.
 				UsersService.create(vm.user).then(function(response){
-					// console.log(response);
+					console.log(response);
 					// $state.go(‘define’) is how ui-route changes from state (url) to other states.
 					$state.go('define');
 				});
@@ -103,11 +140,11 @@
 //feature will use the .$inject directive from Angular to inject dependencies.
 (function(){
 	angular.module('workoutlog')
-	.directive('userlinks'
+	.directive('userlinks',
 		function(){
 			UserLinksController.$inject = ['$state', 'CurrentUser', 'SessionToken'];
 			function UserLinksController($state, CurrentUser, SessionToken){
-				var vm= this;
+				var vm = this;
 				vm.user = function(){
 					return CurrentUser.get();
 				};	
@@ -128,12 +165,66 @@
 				controller: UserLinksController,
 				controllerAs: 'ctrl',
 				bindToController: true,
-				templateUrl: '/components/auth/userlinks/html'
+				templateUrl: '/components/auth/userlinks.html'
 			};
 		});
 })();
 
 		
+
+(function(){
+	angular.module('workoutlog.define', [
+		'ui.router'
+	])
+	.config(defineConfig);
+
+	function defineConfig($stateProvider){
+
+		$stateProvider
+			.state('define', {
+				url: '/define',
+				templateUrl: '/components/define/define.html',
+				controller: DefineController,
+				controllerAs: 'ctrl',
+				bindToController: this,
+				resolve: [
+					'CurrentUser', '$q', '$state',
+					function(CurrentUser, $q, $state){
+						var deferred = $q.defer();
+						if (CurrentUser.isSignedIn()){
+							deferred.resolve();
+						} else {
+							deferred.reject();
+							$state.go('signin');
+						}
+						return deferred.promise;
+					}
+				]	
+			});
+	}
+	
+	defineConfig.$inject = [ '$stateProvider'];
+
+	function DefineController($state, DefineService){
+		var vm = this;
+		vm.message = "Define a workout category here";
+		vm.saved = false;
+		vm.definition = {};
+		vm.save = function(){
+			DefineService.save(vm.definition)
+				.then(function(){
+					vm.saved = true;
+					$state.go('logs')
+				});
+		};
+	}
+	DefineController.$inject = [ '$state', 'DefineService'];
+})();
+
+//  Resolve is built into Angular as a function that
+// executes code prior to going to that route.  In this instance, the resolve is running functions to
+// ensure that a user is actually logged in.  To do this, $q is injected (Angular’s way to build custom
+// promises), $state is injected and CurrentUser.
 
 (function(){
 	angular.module('workoutlog.history',[
@@ -162,7 +253,7 @@
 	}
 	
 	HistoryController.$inject = ['$state', 'LogsService'];
-	funtion HistoryController($state, LogsService){
+	function HistoryController($state, LogsService){
 		var vm= this;
 		vm.history = LogsService.getLogs();
 
@@ -171,8 +262,8 @@
 		};
 
 		vm.updateLog = (function(item){
-			$state.go('logs/update', {'id' : item.id});;
-			};
+			$state.go('logs/update', {'id' : item.id});
+			});
 	}
 })();
 
@@ -183,7 +274,7 @@
 
 (function(){
 	angular.module('workoutlog.logs',[
-		'ui.routConfig'
+		'ui.router'
 	])
 	.config(logsConfig);
 
@@ -224,11 +315,11 @@
 	}
 
 	LogsController.$inject = ['$state', 'DefineService', 'LogsService' ];
-	funtion LogsController($state, DefineService, LogsService){
+	function LogsController($state, DefineService, LogsService){
 		var vm= this;
 		vm.saved = false;
 		vm.log = {};
-		vm.userDefinitions = DefineService.getUserDefinitions();
+		vm.userDefinitions = DefineService.getDefinitions();
 		vm.updateLog = LogsService.getLog();
 		vm.save = function(){
 			LogsService.save(vm.log)
@@ -270,9 +361,10 @@
 			function(SessionToken, API_BASE){
 				return{
 					request: function(config){
+						// console.log(SessionToken);
 						var token = SessionToken.get();
 						// if statement above is essentially checking to see if there is a token and a url of API_BASE : Both of these are set in other files.
-						if (token && confog.url.indexOf(API_BASE) > -1) {
+						if (token && config.url.indexOf(API_BASE) > -1) {
 							//this is where the token that is generated on successful account creations(signup) and logging in (signin) are attached to each ajax request.
 							config.headers['Authorization'] = token;
 						}
@@ -280,6 +372,7 @@
 					}
 				};
 			}]);
+		
 	angular.module('workoutlog')	
 		// This section adds an interceptor that is configured for this app.  $httpProvider has an array thatexecutes each interceptor that the Angular framework runs and also what a developer has custom built for specific applications.
 		// Essentially consider the $httpProvider interceptors as methods to filter http requests.
@@ -327,12 +420,41 @@
 			return new CurrentUser();
 		}]);
 })();
+(function(){
+	angular.module('workoutlog')
+		.service('DefineService', DefineService);
 
+		DefineService.$inject = [ '$http','API_BASE'];
+		function DefineService($http, API_BASE){
+			var defineService = this;
+			defineService.userDefinitions = [];
+
+			defineService.save = function(definition){
+				return $http.post(API_BASE + 'definition',{
+					definition: definition
+
+				}).then(function(response){
+					defineService.userDefinitions.unshift(response.data);
+				});		
+			};
+
+			defineService.fetch = function(definition){
+				return $http.get(API_BASE + 'definition')
+					.then(function(response){
+						defineService.userDefinitions = response.data;
+				});
+			};
+
+			defineService.getDefinitions = function(){
+				return defineService.userDefinitions;
+			};
+		}
+})();
 (function(){
 	angular.module('workoutlog')
 		.service('LogsService', LogsService);
 
-		LogsService.$inject = ['$http,' 'API_BASE'];
+		LogsService.$inject = ['$http' ,'API_BASE'];
 		function LogsService($http, API_BASE, DefineService){
 			var logsService = this;
 			logsService.workouts = [];
@@ -342,16 +464,16 @@
 				return $http.post(API_BASE + 'log',{
 					log: log
 				})
-				.then
-				function(repsonse){
-					logsService.workouts.push(repsonse);
+				.then(
+				function(response) {
+					logsService.workouts.push(response);
 				});
 			};
 
 			logsService.fetch = function(log){
 				return $http.get(API_BASE + 'log')
 					.then
-					(function(repsonse){
+					(function(response){
 						logsService.workouts = response.data;
 					});
 			};
@@ -362,7 +484,7 @@
 
 
 			logsService.deleteLogs = function(log){
-				var logIndex = logsService.workouts.indecOf(log);
+				var logIndex = logsService.workouts.indexOf(log);
 				logsService.workouts.splice(logIndex, 1);
 				var deleteData = {log: log};
 				return $http({
@@ -376,7 +498,7 @@
 			logsService.fetchOne = function(log){
 				// console.log(log);
 				return $http.get(API_BASE + 'log/' + log)
-					.then(function(repsonse){
+					.then(function(response){
 						logsService.individualLog = response.data;
 					});
 			};
@@ -407,6 +529,7 @@
  			// .prototype to attach the functions of .set / .get and .clear to the prototype chain having  memory enhancements and follow conventional design patterns.
 			SessionToken.prototype.set = function(token){
 				this.sessionToken = token;
+				console.log("Setting session token: ", token);
 				$window.localStorage.setItem('sessionToken', token);
 			};
  			// .prototype to attach the functions of .set / .get and .clear to the prototype chain having memory enhancements and follow conventional design patterns.
@@ -414,10 +537,11 @@
 				return this.sessionToken;
 			};
  			// .prototype to attach the functions of .set / .get and .clear to the prototype chain having  memory enhancements and follow conventional design patterns.
-			SessionToken.prototype.get = function(){
+			SessionToken.prototype.clear = function(){
 				this.sessionToken = undefined;
 				$window.localStorage.removeItem('sessionToken');
 			};
+			return new SessionToken();
 		}]);
 })();
 
@@ -441,19 +565,20 @@
 
 (function(){
 	angular.module('workoutlog')
-		.service('UsersService', [
-			'$http', 'API_BASE', 'SessionToken','CurrentUser',
-			function($http, API_BASE, SessionToken, CurrentUser){
-				function UsersService(){
-				}
+	.service('UsersService', [
+		'$http', 'API_BASE', 'SessionToken','CurrentUser',
+		function($http, API_BASE, SessionToken, CurrentUser){
+			function UsersService(){
+
 			}
+
 			UsersService.prototype.create = function(user){
 				var userPromise = $http.post(API_BASE + 'user', {
 					user: user
 				});
 
 				userPromise.then(function(response){
-					SessionToken.set(response.data.sesssionToken);
+					SessionToken.set(response.data.sessionToken);
 					CurrentUser.set(response.data.user);
 				});
 				return userPromise;
@@ -464,15 +589,16 @@
 					user: user
 				});
 
-				loginPromise.then(function(repsonse){
+				loginPromise.then(function(response){
 
-
-					SessionToken.set(repsonse.data.sessionToken);
-					CurrentUser.set(repsonse.data.user);
+					SessionToken.set(response.data.sessionToken);
+					CurrentUser.set(response.data.user);
 				});
 				return loginPromise;
 			};
 			return new UsersService();
 		}]);
 })();
+
+
 //# sourceMappingURL=bundle.js.map

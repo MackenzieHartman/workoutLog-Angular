@@ -5,9 +5,10 @@
 			function(SessionToken, API_BASE){
 				return{
 					request: function(config){
+						// console.log(SessionToken);
 						var token = SessionToken.get();
 						// if statement above is essentially checking to see if there is a token and a url of API_BASE : Both of these are set in other files.
-						if (token && confog.url.indexOf(API_BASE) > -1) {
+						if (token && config.url.indexOf(API_BASE) > -1) {
 							//this is where the token that is generated on successful account creations(signup) and logging in (signin) are attached to each ajax request.
 							config.headers['Authorization'] = token;
 						}
@@ -15,6 +16,7 @@
 					}
 				};
 			}]);
+		
 	angular.module('workoutlog')	
 		// This section adds an interceptor that is configured for this app.  $httpProvider has an array thatexecutes each interceptor that the Angular framework runs and also what a developer has custom built for specific applications.
 		// Essentially consider the $httpProvider interceptors as methods to filter http requests.

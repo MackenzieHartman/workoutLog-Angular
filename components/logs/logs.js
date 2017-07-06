@@ -1,6 +1,6 @@
 (function(){
 	angular.module('workoutlog.logs',[
-		'ui.routConfig'
+		'ui.router'
 	])
 	.config(logsConfig);
 
@@ -41,11 +41,11 @@
 	}
 
 	LogsController.$inject = ['$state', 'DefineService', 'LogsService' ];
-	funtion LogsController($state, DefineService, LogsService){
+	function LogsController($state, DefineService, LogsService){
 		var vm= this;
 		vm.saved = false;
 		vm.log = {};
-		vm.userDefinitions = DefineService.getUserDefinitions();
+		vm.userDefinitions = DefineService.getDefinitions();
 		vm.updateLog = LogsService.getLog();
 		vm.save = function(){
 			LogsService.save(vm.log)
