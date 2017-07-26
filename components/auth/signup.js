@@ -28,7 +28,7 @@
 			// vm.user = {}; establishes an object to build the username and password inside.
 			vm.user = {};
 			// vm.message = “Sign up for an account!” is an example of expressions and how vm and this scope work together.
-			vm.message = "Sign up for an account!"
+			vm.message = "Sign up for an account!";
 			vm.submit = function(){
 				// ng-model and ng-submit create the vm.user object that UserService.create uses to sign a new user up to our application.
 				UsersService.create(vm.user).then(function(response){

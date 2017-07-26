@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "./node_modules/.bin/http-server -a localhost -p8080",
+    "start": "./node_modules/.bin/http-server",
     "prestart": "npm install",
-    "postinstall": "bower install"
+    "postinstall": "bower isntall"
   },
   "author": "Mackenzie Hartman",
   "license": "MIT",

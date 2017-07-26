@@ -4,6 +4,7 @@
 		'workoutlog.define',
 		'workoutlog.logs',
 		'workoutlog.history',
+		'workoutlog feed',
 		'workoutlog.auth.signup',
 		'workoutlog.auth.signin'
 	])
@@ -24,7 +25,7 @@
 	config.$inject = [ '$urlRouterProvider' ];
 	app.config(config);
 
-	var API_BASE = location.hostname === "localhost" ? "//localhost:3000/api/" : "//enigmatic-tundra-33035.herokuapp.com/api"
+	var API_BASE = location.hostname === "localhost" ? "//localhost:3000/api/" : "//workoutlog-server-meh.herokuapp.com/api/";
 	//app.constant('API_BASE', '//localhost:3000/api/');
 	app.constant('API_BASE', API_BASE);
 })();
