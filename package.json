@@ -6,7 +6,7 @@
   "scripts": {
     "start": "./node_modules/.bin/http-server",
     "prestart": "npm install",
-    "postinstall": "bower isntall"
+    "postinstall": "bower install"
   },
   "author": "Mackenzie Hartman",
   "license": "MIT",
