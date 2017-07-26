@@ -4,7 +4,7 @@
 		'workoutlog.define',
 		'workoutlog.logs',
 		'workoutlog.history',
-		'workoutlog feed',
+		'workoutlog.feed',
 		'workoutlog.auth.signup',
 		'workoutlog.auth.signin'
 	])
