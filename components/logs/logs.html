@@ -3,7 +3,7 @@
 		<h2>Log</h2>
 		<label>Result</label>
 		<input type="text" class="form-control log-update" ng-model="ctrl.log.result">
-		<label>Workout Select</label>
+		<label>Select Workout</label>
 		<select class="form-control log-update" 
 				ng-options="item.description as item.description for item in ctrl.userDefinitions" 
 				ng-model="ctrl.log.def">
@@ -13,7 +13,7 @@
 				   rows="3" 
 				   ng-model="ctrl.log.desc">
 		</textarea>
-		<p ng-show="ctrl.saved">You created a new log</p>
+		<p ng-show="ctrl.saved">You created a new log.</p>
 		<br>
 		<button id="log-save" 
 				class="btn btn-primary" 
