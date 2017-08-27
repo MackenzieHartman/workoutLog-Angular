@@ -1,17 +1,56 @@
+body{
+	background-image: url('../img/squatbar.jpg');
+	background-repeat: no-repeat;
+	background-image: cover;
+	background-size: 100%;
+	width: 100%;
+	height: 100%;
+}
+
 h1, h2, h3, h4, h5 {
 	color: #D9514E;
 }
 
-#def-save, #signup, #login, #log-save {
-	background-color: #D9514E;
-	border: 1px solid white;
-	color: white;
+label{
+	color: #cfcfcf !important;
+	font-weight: 100 !important;
 }
 
+p{
+	color: #cfcfcf;
+	font-size: 12px;
+}
+
+li a{
+	color: #4c4c4c
+}
+
+.navbar-default{
+ background-color: #cfcfcf;
+}
+
+#def-save, #signup, #login, #log-save {
+	background-color: #D9514E;
+	border: 1px solid #D9514E;
+	color: #cfcfcf;
+}
+
+#signup{
+	border-radius: 5px;
+	padding: 2%;
+}
 .container {
 	width: 75% !important;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
+}
+
+.form-control{
+	width: 50% !important;
+}
+
+.log-update {
+	width: 100% !important;
 }
 
 .row {
@@ -22,4 +61,21 @@ h1, h2, h3, h4, h5 {
 .col-xs-12 {
 	padding-left: 0 !important;
 	padding-right: 0 !important;
+}
+
+.img {
+	margin-bottom: 10%;
+}
+
+.color-input{
+	color: #333333;
+	border-radius: 5px;
+}
+
+.glyphicon-trash{
+	color:#D9514E;
+}
+
+.glyphicon-edit{
+	color:FFD24A;
 }

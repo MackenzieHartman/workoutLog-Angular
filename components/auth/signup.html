@@ -1,19 +1,19 @@
 <div class = "container">
 	<div class = "row">
-		<div class="col-xs-6 col-xs-offset-4">
+		<div class="col-xs-6">
 			<h3>Sign Up</h3>
 				<p>{{ctrl.message}}</p>
 			<form id = "new_user" ng-submit="ctrl.submit()">
 				<p>
 					<label for="username">Username</label><br>
-					<input type="text" name="username" ng-model="ctrl.user.username" required>
+					<input class="color-input" type="text" name="username" ng-model="ctrl.user.username" required>
 				</p>
 				<p>
 					<label for="password">Password</label><br>
-					<input type="text" ng-model="ctrl.user.password" name="passsword" required>					
+					<input class="color-input" type="text" ng-model="ctrl.user.password" name="passsword" required>					
 				</p>
-				<input type="submit" id="signup" name="commit" value="Sign Up" class="btn btn-default">
-				<span class="login">
+				<input class="color-input" type="submit" id="signup" name="commit" value="Sign Up" class="btn btn-info">
+				<span class="signup">
 					Already have an account?
 					<a ui-sref="signin">Log in.</a>
 				</span>
